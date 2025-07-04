@@ -28,7 +28,7 @@ def main():
         print("✅ Gemini API configured successfully!")
         
         # Initialize the model
-        model = genai.GenerativeModel('gemini-pro')
+        model = genai.GenerativeModel('gemini-2.0-flash-exp')
         print("✅ Gemini model loaded successfully!")
         
         # Example usage - you can modify this based on your needs
