@@ -106,7 +106,11 @@ export default function Home() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="text-3xl animate-bounce">🧳</div>
+              <div className="flex items-center space-x-2">
+                <div className="text-2xl">🗺️</div>
+                <div className="text-2xl">✈️</div>
+                <div className="text-2xl">🏛️</div>
+              </div>
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">TravelBuddy AI</h1>
                 <p className="text-sm text-gray-600">Your AI travel companion</p>
@@ -134,9 +138,24 @@ export default function Home() {
             <div className="h-full overflow-y-auto p-6 space-y-4">
               {chatHistory.length === 0 && !loading && (
                 <div className="text-center py-12">
-                  <div className="text-6xl mb-4 animate-pulse">🧳</div>
+                  <div className="flex justify-center space-x-4 mb-6">
+                    <div className="text-4xl animate-bounce" style={{ animationDelay: '0s' }}>🗺️</div>
+                    <div className="text-4xl animate-bounce" style={{ animationDelay: '0.2s' }}>🏛️</div>
+                    <div className="text-4xl animate-bounce" style={{ animationDelay: '0.4s' }}>🗽</div>
+                    <div className="text-4xl animate-bounce" style={{ animationDelay: '0.6s' }}>🗼</div>
+                    <div className="text-4xl animate-bounce" style={{ animationDelay: '0.8s' }}>🏰</div>
+                  </div>
                   <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome to TravelBuddy!</h2>
-                  <p className="text-gray-600">Ask me anything about travel - I'll help simplify complex information for you.</p>
+                  <p className="text-gray-600 mb-4">Ask me anything about travel - I'll help simplify complex information for you.</p>
+                  <div className="flex justify-center space-x-2 text-sm text-gray-500">
+                    <span>🗺️ Maps & Directions</span>
+                    <span>•</span>
+                    <span>🏛️ Cultural Sites</span>
+                    <span>•</span>
+                    <span>🍽️ Local Cuisine</span>
+                    <span>•</span>
+                    <span>🚇 Transportation</span>
+                  </div>
                 </div>
               )}
 
