@@ -2,6 +2,14 @@
 
 import { useState, useRef, useEffect } from "react";
 
+// Type declarations for Speech Recognition API
+declare global {
+  interface Window {
+    SpeechRecognition: any;
+    webkitSpeechRecognition: any;
+  }
+}
+
 interface ChatMessage {
   id: string;
   type: 'user' | 'assistant';
@@ -19,12 +27,65 @@ export default function Home() {
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [listening, setListening] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
+  const recognitionRef = useRef<any>(null);
+
+  // Initialize Speech Recognition
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const SpeechRecognition = window.SpeechRecognition || (window as any).webkitSpeechRecognition;
+      if (SpeechRecognition) {
+        recognitionRef.current = new SpeechRecognition();
+        recognitionRef.current.continuous = false;
+        recognitionRef.current.interimResults = false;
+        recognitionRef.current.lang = 'en-US';
+        
+        recognitionRef.current.onresult = (event: any) => {
+          const transcript = event.results[0][0].transcript;
+          setInput(transcript);
+          setListening(false);
+        };
+        
+        recognitionRef.current.onerror = (event: any) => {
+          console.error('Speech recognition error:', event.error);
+          setListening(false);
+        };
+        
+        recognitionRef.current.onend = () => {
+          setListening(false);
+        };
+      }
+    }
+  }, []);
 
   // Auto-scroll to bottom when new messages are added
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [chatHistory]);
+
+  // Voice recognition functions
+  const startListening = () => {
+    if (!recognitionRef.current) {
+      alert('Speech recognition is not supported in this browser. Please use Chrome or Edge.');
+      return;
+    }
+    
+    try {
+      recognitionRef.current.start();
+      setListening(true);
+    } catch (error) {
+      console.error('Error starting speech recognition:', error);
+      setListening(false);
+    }
+  };
+
+  const stopListening = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      setListening(false);
+    }
+  };
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -247,6 +308,21 @@ export default function Home() {
                   disabled={loading}
                 />
               </div>
+              {/* Microphone Button */}
+              <button
+                type="button"
+                onClick={listening ? stopListening : startListening}
+                className={`px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 font-medium shadow-sm ${
+                  listening 
+                    ? 'bg-red-500 text-white hover:bg-red-600' 
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+                style={{ fontSize: '1.5rem' }}
+                title={listening ? "Stop listening" : "Speak"}
+                disabled={loading}
+              >
+                {listening ? '🔴' : '🎤'}
+              </button>
               <button
                 type="submit"
                 disabled={loading || !input.trim()}
@@ -262,6 +338,16 @@ export default function Home() {
                 )}
               </button>
             </form>
+
+            {/* Voice Recognition Status */}
+            {listening && (
+              <div className="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-3">
+                <div className="flex items-center space-x-2 text-blue-700">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                  <span className="text-sm font-medium">Listening... Speak now!</span>
+                </div>
+              </div>
+            )}
 
             {error && (
               <div className="mt-4 bg-red-50 border border-red-200 rounded-lg p-3">
