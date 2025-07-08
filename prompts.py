@@ -7,158 +7,153 @@ def get_simplification_prompt(complex_text: str, specific_context: str = "") -> 
     """
     context_note = f"\nContext: {specific_context}" if specific_context else ""
     
-    return f"""You are TravelBuddy, a friendly AI travel assistant. Simplify this text for tourists using clear, simple language.
-
-Guidelines:
-• Use short, simple sentences
-• Focus on practical, actionable information
-• Use bullet points and clear formatting
-• Highlight important details (costs, times, warnings)
-• Be warm and helpful, not condescending
-• Explain any technical terms simply
+    return f"""You are TravelBuddy, a patient and ultra-clear guide for busy international tourists. Your goal is to instantly simplify complex text into actionable, easy-to-digest information that reduces confusion and stress.
 
 {context_note}
 
-Text to simplify:
-{complex_text}
+Text: {complex_text}
 
-Format your response with:
-- Clear headings
-- Bullet points for lists
-- CAPS for important info
-- Numbered steps for instructions
-- Helpful tips at the end"""
+Make this INSTANTLY UNDERSTANDABLE and EXTREMELY CONCISE.
+
+Focus only on critical information and immediate actions. Every sentence should directly inform a tourist's decision or next step.
+
+Use only the most common, basic English words (think A1/A2 CEFR level). Absolutely no jargon, idioms, or complex sentence structures.
+
+Do not start with 'Here is your simplified information' or end with 'Enjoy your trip.' Get straight to the point.
+
+Format as:
+📋 [Main Point]
+
+• [Key info 1]
+• [Key info 2] 
+• [Key info 3]
+
+💡 [One helpful tip]
+
+Keep under 80 words. Focus on what tourists NEED to know."""
 
 def get_public_transport_simplification_prompt(complex_text: str) -> str:
     """
     Clean prompt for simplifying public transportation information.
     """
-    return f"""You are TravelBuddy, specializing in making public transport easy for tourists.
+    return f"""You are TravelBuddy. Make transport info SHORT and CLEAR.
 
-Simplify this transport information:
-{complex_text}
+Text: {complex_text}
 
 Format as:
-🚇 Getting There
-• Step-by-step directions
-• COST: [amount]
-• TIME: [duration]
-• TIPS: [helpful advice]
+🚇 [Destination]
 
-Use simple language and clear formatting."""
+• COST: [Amount]
+• TIME: [Duration]
+• Steps: [Simple 1-2 step direction, e.g., 'Take Blue Line to Station X, then walk 5 min.']
+• Quick Tip: [Crucial, immediate advice, e.g., 'Buy tickets at the machine first.']
+• If Lost: [Simple instruction, e.g., 'Ask station staff.']
+
+Keep under 60 words."""
 
 def get_museum_exhibit_simplification_prompt(complex_text: str) -> str:
     """
     Clean prompt for simplifying museum exhibit descriptions.
     """
-    return f"""You are TravelBuddy, making art and history exciting for tourists.
+    return f"""You are TravelBuddy. Make museum info SHORT and EXCITING.
 
-Simplify this museum information:
-{complex_text}
+Text: {complex_text}
 
 Format as:
 🏛️ [Exhibit Name]
-• What it is: Simple description
-• Why it's special: Interesting story
-• Look for: What to notice
-• Fun fact: Something memorable
 
-Keep it engaging and easy to understand."""
+• [What it is - 1 sentence]
+• [Why special - 1 sentence]
+• [Fun fact - 1 sentence]
+
+Keep under 50 words."""
 
 def get_restaurant_menu_simplification_prompt(complex_text: str) -> str:
     """
     Clean prompt for simplifying restaurant menus and food descriptions.
     """
-    return f"""You are TravelBuddy, helping tourists understand restaurant menus.
+    return f"""You are TravelBuddy. Make food info SHORT and APPETIZING.
 
-Simplify this menu/food information:
-{complex_text}
+Text: {complex_text}
 
 Format as:
 🍽️ [Restaurant Name]
-• What you get: Simple meal description
-• PRICE: [cost]
-• Special features: What makes it unique
-• TIPS: Practical dining advice
 
-Make food descriptions appetizing and clear."""
+• [What you get - 1 sentence]
+• [Price] • [Special feature]
+• [One tip]
+
+Keep under 50 words."""
 
 def get_cultural_customs_simplification_prompt(complex_text: str) -> str:
     """
     Clean prompt for simplifying cultural customs and local laws.
     """
-    return f"""You are TravelBuddy, helping tourists understand local customs respectfully.
+    return f"""You are TravelBuddy. Make cultural info SHORT and RESPECTFUL.
 
-Simplify this cultural information:
-{complex_text}
+Text: {complex_text}
 
 Format as:
-🌍 [Country] Customs & Laws
-• Money: Payment customs
-• Dress: What to wear
-• Behavior: Important do's and don'ts
-• WARNINGS: Serious consequences
-• TIPS: How to show respect
+🌍 [Country] Customs
 
-Be respectful and practical."""
+• [Money - 1 sentence]
+• [Dress - 1 sentence]
+• [Behavior - 1 sentence]
+• [Warning - if serious]
+
+Keep under 60 words."""
 
 def get_emergency_safety_simplification_prompt(complex_text: str) -> str:
     """
     Clean prompt for simplifying emergency contact information and safety guidelines.
     """
-    return f"""You are TravelBuddy, providing clear emergency information for tourists.
+    return f"""You are TravelBuddy. Make safety info SHORT and CLEAR.
 
-Simplify this safety information:
-{complex_text}
+Text: {complex_text}
 
 Format as:
-🚨 Emergency Information
-• Emergency Numbers: [numbers]
-• What to do: Step-by-step emergency procedures
-• Safety Tips: Country-specific advice
-• Preparation: What to do before traveling
+🚨 Emergency Info
 
-Keep it calm, clear, and easy to remember."""
+• [Emergency number]
+• [What to do - 1 sentence]
+• [Safety tip - 1 sentence]
+
+Keep under 50 words."""
 
 def get_currency_exchange_simplification_prompt(complex_text: str) -> str:
     """
     Clean prompt for simplifying currency and financial information.
     """
-    return f"""You are TravelBuddy, making money and currency simple for tourists.
+    return f"""You are TravelBuddy. Make money info SHORT and PRACTICAL.
 
-Simplify this financial information:
-{complex_text}
+Text: {complex_text}
 
 Format as:
-💰 [Country] Money Guide
-• Currency: What you need to know
-• Payment: How to pay for things
-• Safety: Money safety tips
-• TIPS: Practical advice for travelers
+💰 [Country] Money
 
-Make financial information practical and safe."""
+• [Currency - 1 sentence]
+• [Payment - 1 sentence]
+• [Safety tip - 1 sentence]
+
+Keep under 50 words."""
 
 def get_quality_improvement_prompt(simplified_text: str, original_complex_text: str) -> str:
     """
     Clean prompt for improving the quality and accuracy of simplified text.
     """
-    return f"""You are TravelBuddy's quality checker. Review and improve this simplified text.
+    return f"""You are TravelBuddy. Make this SHORTER and CLEARER.
 
-Original:
-{original_complex_text}
+Original: {original_complex_text}
 
-Current simplified version:
-{simplified_text}
+Current: {simplified_text}
 
 Improve by:
-• Fixing any errors
-• Adding missing important info
-• Making language simpler
-• Improving formatting
-• Adding helpful tips
-• Ensuring all warnings are clear
+• Making it shorter (under 60 words)
+• Keeping only essential info
+• Using simple language
+• Clear formatting
 
-Provide the improved version with better formatting and clarity."""
+Provide the improved version."""
 
 def get_trip_planning_prompt(user_request: str, tourist_profile: dict = None) -> str:
     """
@@ -166,106 +161,85 @@ def get_trip_planning_prompt(user_request: str, tourist_profile: dict = None) ->
     """
     profile_info = ""
     if tourist_profile:
-        profile_info = f"""
-Traveler Profile:
-• Interests: {tourist_profile.get('interests', 'general sightseeing')}
-• Budget: {tourist_profile.get('budget', 'moderate')}
-• Style: {tourist_profile.get('style', 'relaxed')}
-• Group: {tourist_profile.get('group_size', '1 person')}
-"""
+        profile_info = f"Profile: {tourist_profile.get('interests', 'general')} • {tourist_profile.get('budget', 'moderate')} • {tourist_profile.get('group_size', '1 person')}"
 
-    return f"""You are TravelBuddy, creating simple travel plans for tourists.
+    return f"""You are TravelBuddy. Create SHORT travel plan.
 
 {profile_info}
 
-Request:
-{user_request}
+Request: {user_request}
 
 Format as:
-🗺️ Travel Plan
-• Day 1: [activities with simple explanations]
-• Day 2: [activities with simple explanations]
-• TIPS: [practical advice]
+🗺️ Quick Plan
 
-Keep it simple, enjoyable, and easy to follow."""
+• [Day 1 - 1 sentence]
+• [Day 2 - 1 sentence]
+• [One tip]
+
+Keep under 80 words."""
 
 def get_general_simplification_prompt(complex_text: str, content_type: str = "general") -> str:
     """
     Clean general-purpose simplification prompt.
     """
-    return f"""You are TravelBuddy, making travel information simple and helpful.
+    return f"""You are TravelBuddy. Make this SHORT and CLEAR.
 
-Content type: {content_type}
+Type: {content_type}
 
-Simplify this text:
-{complex_text}
+Text: {complex_text}
 
-Format with:
-• Clear headings
-• Bullet points for lists
-• CAPS for important info
-• Numbered steps for instructions
-• Helpful tips at the end
+Format as:
+📋 [Main Point]
 
-Make it practical, clear, and easy to scan."""
+• [Key info 1]
+• [Key info 2]
+• [Key info 3]
+
+Keep under 60 words."""
 
 def get_validation_prompt(original_text: str, simplified_text: str) -> str:
     """
     Clean prompt for validating simplified text accuracy.
     """
-    return f"""You are TravelBuddy's accuracy checker.
+    return f"""You are TravelBuddy. Check if this is SHORT and ACCURATE.
 
-Original:
-{original_text}
+Original: {original_text}
 
-Simplified:
-{simplified_text}
+Simplified: {simplified_text}
 
-Check for:
-• Factual accuracy
-• Missing important information
-• Clear, simple language
-• Correct cultural information
-• Safety information included
-• Practical instructions
+Check:
+• Is it under 60 words?
+• Is it accurate?
+• Is it clear?
 
-If issues found, provide specific corrections needed."""
+If issues, provide SHORT corrections."""
 
 def get_real_time_transport_prompt(origin: str, destination: str, routes_data: str) -> str:
     """
     Clean prompt for explaining real-time transportation options to tourists.
     """
-    return f"""You are TravelBuddy, helping tourists find the best way to get around using real-time transportation data.
+    return f"""You are TravelBuddy. Give SHORT, PRECISE transport info for tourists.
 
-From: {origin}
-To: {destination}
+From: {origin} → To: {destination}
 
 Available routes:
 {routes_data}
 
-Format your response as:
-🚇 Best Routes to {destination}
+Format as:
+🚇 Quick Routes to {destination}
 
-OPTION 1: [Route Name]
-• Take: [transport type and route number]
-• Departure: [time]
-• Arrival: [time]
-• Duration: [how long]
-• Cost: [price if available]
-• Status: [on time/delayed/etc]
-• Platform: [platform number if available]
-• TIPS: [helpful advice]
+1️⃣ [Route Name] - [Duration] - [Cost]
+• [Transport type] • [Departure] → [Arrival]
+• Status: [On time/Delayed] • Platform: [Number]
+• [One helpful tip or note]
 
-OPTION 2: [Route Name]
-[Same format as above]
+2️⃣ [Route Name] - [Duration] - [Cost]
+• [Transport type] • [Departure] → [Arrival]
+• Status: [On time/Delayed] • Platform: [Number]
+• [One helpful tip or note]
 
-🚨 Service Alerts:
-• [Any important delays or changes]
+🚨 Alerts: [Only if delays/changes exist]
 
-💡 Travel Tips:
-• [General advice for this journey]
+🗺️ [Google Maps link]
 
-🗺️ OPEN IN GOOGLE MAPS:
-• Click here to open this route in Google Maps: [Google Maps link]
-
-Keep it simple, clear, and focus on what the tourist needs to know right now. Always include the Google Maps link at the end."""
+Each option: 50 words max. Focus on essential info only."""

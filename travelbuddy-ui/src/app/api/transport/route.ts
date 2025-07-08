@@ -118,40 +118,31 @@ function generateGoogleMapsLink(origin: string, destination: string): string {
 function getRealTimeTransportPrompt(origin: string, destination: string, routesData: string): string {
   const googleMapsLink = generateGoogleMapsLink(origin, destination);
   
-  return `You are TravelBuddy, helping tourists find the best way to get around using real-time transportation data.
+  return `You are TravelBuddy. Give SHORT, PRECISE transport info for tourists.
 
-From: ${origin}
-To: ${destination}
+From: ${origin} → To: ${destination}
 
 Available routes:
 ${routesData}
 
-Format your response as:
-🚇 Best Routes to ${destination}
+Format as:
+🚇 Quick Routes to ${destination}
 
-OPTION 1: [Route Name]
-• Take: [transport type and route number]
-• Departure: [time]
-• Arrival: [time]
-• Duration: [how long]
-• Cost: [price if available]
-• Status: [on time/delayed/etc]
-• Platform: [platform number if available]
-• TIPS: [helpful advice]
+1️⃣ [Route Name] - [Duration] - [Cost]
+• [Transport type] • [Departure] → [Arrival]
+• Status: [On time/Delayed] • Platform: [Number]
+• [One helpful tip or note]
 
-OPTION 2: [Route Name]
-[Same format as above]
+2️⃣ [Route Name] - [Duration] - [Cost]
+• [Transport type] • [Departure] → [Arrival]
+• Status: [On time/Delayed] • Platform: [Number]
+• [One helpful tip or note]
 
-🚨 Service Alerts:
-• [Any important delays or changes]
+🚨 Alerts: [Only if delays/changes exist]
 
-💡 Travel Tips:
-• [General advice for this journey]
+🗺️ ${googleMapsLink}
 
-🗺️ OPEN IN GOOGLE MAPS:
-• Click here to open this route in Google Maps: ${googleMapsLink}
-
-Keep it simple, clear, and focus on what the tourist needs to know right now. Always include the Google Maps link at the end.`;
+Each option: 50 words max. Focus on essential info only.`;
 }
 
 export async function POST(request: NextRequest) {
