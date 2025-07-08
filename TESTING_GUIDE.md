@@ -108,7 +108,7 @@ To transfer from the Marunouchi Line to the Yamanote Line at Shinjuku Station...
 🎯 TESTING: Public Transport Instructions
 ============================================================
 📁 Raw file: data/raw_tourist_texts/public_transport_instructions.txt
-📁 Gold standard: data/simplified_outputs/public_transport_instructions_simplified.md
+📁 Testing: Public transport simplification
 
 ============================================================
 🧪 TESTING: Public Transport Instructions

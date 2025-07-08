@@ -144,37 +144,31 @@ def run_comprehensive_test():
     test_cases = [
         {
             'raw_file': 'data/raw_tourist_texts/public_transport_instructions.txt',
-            'simplified_file': 'data/simplified_outputs/public_transport_instructions_simplified.md',
             'prompt_function': get_public_transport_simplification_prompt,
             'name': 'Public Transport Instructions'
         },
         {
             'raw_file': 'data/raw_tourist_texts/museum_exhibit_descriptions.txt',
-            'simplified_file': 'data/simplified_outputs/museum_exhibit_descriptions_simplified.md',
             'prompt_function': get_museum_exhibit_simplification_prompt,
             'name': 'Museum Exhibit Descriptions'
         },
         {
             'raw_file': 'data/raw_tourist_texts/restaurant_menus.txt',
-            'simplified_file': 'data/simplified_outputs/restaurant_menus_simplified.md',
             'prompt_function': get_restaurant_menu_simplification_prompt,
             'name': 'Restaurant Menus'
         },
         {
             'raw_file': 'data/raw_tourist_texts/local_laws_customs.txt',
-            'simplified_file': 'data/simplified_outputs/local_laws_customs_simplified.md',
             'prompt_function': get_cultural_customs_simplification_prompt,
             'name': 'Local Laws and Customs'
         },
         {
             'raw_file': 'data/raw_tourist_texts/emergency_contact_safety.txt',
-            'simplified_file': 'data/simplified_outputs/emergency_contact_safety_simplified.md',
             'prompt_function': get_emergency_safety_simplification_prompt,
             'name': 'Emergency Contact and Safety'
         },
         {
             'raw_file': 'data/raw_tourist_texts/currency_exchange.txt',
-            'simplified_file': 'data/simplified_outputs/currency_exchange_simplified.md',
             'prompt_function': get_currency_exchange_simplification_prompt,
             'name': 'Currency Exchange'
         }
@@ -191,14 +185,8 @@ def run_comprehensive_test():
         raw_text = read_file_content(test_case['raw_file'])
         if not raw_text:
             continue
-            
-        # Read gold standard simplified text
-        gold_standard = read_file_content(test_case['simplified_file'])
-        if not gold_standard:
-            continue
         
         print(f"📁 Raw file: {test_case['raw_file']}")
-        print(f"📁 Gold standard: {test_case['simplified_file']}")
         
         # Test simplification
         simplified_text = test_simplification(
@@ -229,7 +217,6 @@ def run_comprehensive_test():
                 'name': test_case['name'],
                 'raw_length': len(raw_text),
                 'simplified_length': len(simplified_text),
-                'gold_standard_length': len(gold_standard),
                 'reduction_percent': ((len(raw_text) - len(simplified_text)) / len(raw_text) * 100),
                 'success': True
             })

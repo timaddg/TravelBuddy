@@ -12,7 +12,7 @@ TravelBuddy is an AI-powered assistant that leverages Google's Gemini API to hel
 - `prompts.py`: Store and manage prompts
 - `data/`: Training and evaluation data
   - `raw_tourist_texts/`: Complex input texts (e.g., website snippets, map legends)
-  - `simplified_outputs/`: Human-curated simplified versions
+  - `raw_tourist_texts/`: Source tourist information files
 - `.env`: Store your Gemini API key (not committed to version control)
 
 ## Setup
