@@ -87,6 +87,52 @@ export default function Home() {
     }
   };
 
+  // Function to detect if the input is a transport query
+  function isTransportQuery(text: string): boolean {
+    const transportKeywords = [
+      'how do i get', 'how to get', 'transport', 'bus', 'train', 'subway', 'metro',
+      'route', 'directions', 'from', 'to', 'airport', 'station', 'stop',
+      'public transport', 'transit', 'commute', 'travel between'
+    ];
+    
+    const lowerText = text.toLowerCase();
+    return transportKeywords.some(keyword => lowerText.includes(keyword));
+  }
+
+  // Function to extract origin and destination from transport query
+  function extractLocations(text: string): { origin: string | null, destination: string | null } {
+    const lowerText = text.toLowerCase();
+    
+    // Look for "from X to Y" pattern
+    const fromToMatch = text.match(/from\s+([^,\n]+?)\s+to\s+([^,\n]+?)(?:\s|$|\.|,)/i);
+    if (fromToMatch) {
+      return {
+        origin: fromToMatch[1].trim(),
+        destination: fromToMatch[2].trim()
+      };
+    }
+    
+    // Look for "between X and Y" pattern
+    const betweenMatch = text.match(/between\s+([^,\n]+?)\s+and\s+([^,\n]+?)(?:\s|$|\.|,)/i);
+    if (betweenMatch) {
+      return {
+        origin: betweenMatch[1].trim(),
+        destination: betweenMatch[2].trim()
+      };
+    }
+    
+    // Look for "X to Y" pattern
+    const toMatch = text.match(/([^,\n]+?)\s+to\s+([^,\n]+?)(?:\s|$|\.|,)/i);
+    if (toMatch) {
+      return {
+        origin: toMatch[1].trim(),
+        destination: toMatch[2].trim()
+      };
+    }
+    
+    return { origin: null, destination: null };
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!input.trim() || loading) return;
@@ -104,34 +150,81 @@ export default function Home() {
     setInput("");
 
     try {
-      const res = await fetch("/api/simplify", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          userInput: input,
-          promptType: "general" // Simplified to single prompt type
-        }),
-      });
+      // Check if this is a transport query
+      if (isTransportQuery(input)) {
+        const locations = extractLocations(input);
+        
+        if (locations.origin && locations.destination) {
+          // Handle transport query
+          const res = await fetch("/api/transport", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              origin: locations.origin,
+              destination: locations.destination,
+              preferences: {
+                transport_types: ['bus', 'train', 'subway'],
+                max_duration: 60,
+                max_cost: 10
+              }
+            }),
+          });
 
-      const data = await res.json();
+          const data = await res.json();
 
-      if (!res.ok) {
-        throw new Error(data.error || "Failed to simplify text");
-      }
+          if (!res.ok) {
+            throw new Error(data.error || "Failed to get transport information");
+          }
 
-      const assistantMessage: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        type: 'assistant',
-        content: data.result,
-        timestamp: new Date(),
-        stats: {
-          originalLength: data.originalLength,
-          simplifiedLength: data.simplifiedLength,
-          reduction: data.reduction
+          const assistantMessage: ChatMessage = {
+            id: (Date.now() + 1).toString(),
+            type: 'assistant',
+            content: data.simplified_text,
+            timestamp: new Date()
+          };
+
+          setChatHistory(prev => [...prev, assistantMessage]);
+        } else {
+          // Transport query but couldn't extract locations
+          const assistantMessage: ChatMessage = {
+            id: (Date.now() + 1).toString(),
+            type: 'assistant',
+            content: `🚇 I can help you find transport routes! Please specify your origin and destination clearly. For example:\n\n• "How do I get from Times Square to Central Park?"\n• "Transport from JFK Airport to Manhattan"\n• "Route from Brooklyn Bridge to Empire State Building"\n\nOr visit the 🚇 Transport Finder for a dedicated interface.`,
+            timestamp: new Date()
+          };
+          setChatHistory(prev => [...prev, assistantMessage]);
         }
-      };
+      } else {
+        // Handle regular text simplification
+        const res = await fetch("/api/simplify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ 
+            userInput: input,
+            promptType: "general"
+          }),
+        });
 
-      setChatHistory(prev => [...prev, assistantMessage]);
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || "Failed to simplify text");
+        }
+
+        const assistantMessage: ChatMessage = {
+          id: (Date.now() + 1).toString(),
+          type: 'assistant',
+          content: data.result,
+          timestamp: new Date(),
+          stats: {
+            originalLength: data.originalLength,
+            simplifiedLength: data.simplifiedLength,
+            reduction: data.reduction
+          }
+        };
+
+        setChatHistory(prev => [...prev, assistantMessage]);
+      }
 
     } catch (err: any) {
       setError(err.message);
@@ -215,7 +308,7 @@ export default function Home() {
                     <span>•</span>
                     <span>🍽️ Local Cuisine</span>
                     <span>•</span>
-                    <span>🚇 Transportation</span>
+                    <span>🚇 Real-time Transport</span>
                   </div>
                 </div>
               )}
@@ -237,7 +330,33 @@ export default function Home() {
                         {message.type === 'user' ? '👤' : '🤖'}
                       </div>
                       <div className="flex-1">
-                        <div className="whitespace-pre-wrap">{message.content}</div>
+                        <div className="whitespace-pre-wrap">
+                          {message.content.split('\n').map((line, index) => {
+                            // Check if line contains a Google Maps link
+                            const googleMapsMatch = line.match(/https:\/\/www\.google\.com\/maps\/dir\/[^\s]+/);
+                            if (googleMapsMatch) {
+                              const url = googleMapsMatch[0];
+                              const beforeUrl = line.substring(0, line.indexOf(url));
+                              const afterUrl = line.substring(line.indexOf(url) + url.length);
+                              
+                              return (
+                                <div key={index}>
+                                  {beforeUrl}
+                                  <a 
+                                    href={url} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="text-blue-600 hover:text-blue-800 underline font-medium"
+                                  >
+                                    🗺️ Open in Google Maps
+                                  </a>
+                                  {afterUrl}
+                                </div>
+                              );
+                            }
+                            return <div key={index}>{line}</div>;
+                          })}
+                        </div>
                         {message.stats && (
                           <div className="mt-3 pt-3 border-t border-gray-200">
                             <div className="grid grid-cols-3 gap-2 text-xs">
