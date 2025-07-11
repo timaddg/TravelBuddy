@@ -158,7 +158,6 @@ To transfer from the Marunouchi Line to the Yamanote Line at Shinjuku Station...
   • Restaurant Menus: 48.7% reduction
   • Local Laws and Customs: 44.2% reduction
   • Emergency Contact and Safety: 46.8% reduction
-  • Currency Exchange: 42.9% reduction
 ```
 
 ## 🎯 Testing Different Content Types
@@ -191,9 +190,6 @@ The system can handle 6 different types of tourist information:
 - **Example:** Emergency contacts, natural disaster procedures
 
 ### 6. Currency & Financial Information
-- **Prompt:** `get_currency_exchange_simplification_prompt()`
-- **Best for:** Money, banking, payment methods
-- **Example:** Exchange rates, ATM locations, tipping customs
 
 ## 🔧 Troubleshooting
 

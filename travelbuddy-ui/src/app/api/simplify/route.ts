@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import { spawn } from 'child_process';
-import path from 'path';
+import * as path from 'path';
 
 // Optimized prompt generation using Python backend
 async function getOptimizedPrompt(complexText: string, promptType: string): Promise<string> {
@@ -100,19 +100,6 @@ Format as:
 
 • [Emergency number]
 • [What to do - 1 sentence]
-• [Safety tip - 1 sentence]
-
-Keep under 50 words.`,
-
-  currency_exchange: (text: string) => `You are TravelBuddy. Make money info SHORT and PRACTICAL.
-
-Text: ${text}
-
-Format as:
-💰 [Country] Money
-
-• [Currency - 1 sentence]
-• [Payment - 1 sentence]
 • [Safety tip - 1 sentence]
 
 Keep under 50 words.`,

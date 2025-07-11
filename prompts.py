@@ -80,15 +80,6 @@ PROMPT_CONFIGS = {
 • [What to do - 1 sentence]
 • [Safety tip - 1 sentence]""",
         "word_limit": 50
-    },
-    "currency_exchange": {
-        "instructions": "Make money info SHORT and PRACTICAL. Focus on currency basics and payment methods.",
-        "format_template": """💰 [Country] Money
-
-• [Currency - 1 sentence]
-• [Payment - 1 sentence]
-• [Safety tip - 1 sentence]""",
-        "word_limit": 50
     }
 }
 
@@ -244,9 +235,6 @@ def get_cultural_customs_simplification_prompt(complex_text: str) -> str:
 
 def get_emergency_safety_simplification_prompt(complex_text: str) -> str:
     return get_simplification_prompt(complex_text, "emergency_safety")
-
-def get_currency_exchange_simplification_prompt(complex_text: str) -> str:
-    return get_simplification_prompt(complex_text, "currency_exchange")
 
 def get_general_simplification_prompt(complex_text: str, content_type: str = "general") -> str:
     return get_simplification_prompt(complex_text, content_type)

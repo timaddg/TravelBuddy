@@ -166,11 +166,6 @@ def run_comprehensive_test():
             'raw_file': 'data/raw_tourist_texts/emergency_contact_safety.txt',
             'prompt_function': get_emergency_safety_simplification_prompt,
             'name': 'Emergency Contact and Safety'
-        },
-        {
-            'raw_file': 'data/raw_tourist_texts/currency_exchange.txt',
-            'prompt_function': get_currency_exchange_simplification_prompt,
-            'name': 'Currency Exchange'
         }
     ]
     
@@ -287,9 +282,8 @@ def run_single_test():
     print("4. Restaurant menus")
     print("5. Cultural customs")
     print("6. Emergency safety")
-    print("7. Currency exchange")
     
-    choice = input("Enter choice (1-7): ").strip()
+    choice = input("Enter choice (1-6): ").strip()
     
     prompt_functions = {
         '1': get_simplification_prompt,
@@ -297,8 +291,7 @@ def run_single_test():
         '3': get_museum_exhibit_simplification_prompt,
         '4': get_restaurant_menu_simplification_prompt,
         '5': get_cultural_customs_simplification_prompt,
-        '6': get_emergency_safety_simplification_prompt,
-        '7': get_currency_exchange_simplification_prompt
+        '6': get_emergency_safety_simplification_prompt
     }
     
     if choice not in prompt_functions:
